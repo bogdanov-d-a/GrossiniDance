@@ -27,5 +27,11 @@ bool HelloWorld::init()
 	if (!Layer::init())
 		return false;
 	
+	// create a sprite batch node
+	SpriteBatchNode *batchNode = SpriteBatchNode::create("grossini_dance_atlas.png");
+	if (!batchNode)
+		return false;
+	addChild(batchNode);
+
 	return true;
 }
