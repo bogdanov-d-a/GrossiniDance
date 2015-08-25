@@ -26,12 +26,25 @@ bool HelloWorld::init()
 {
 	if (!Layer::init())
 		return false;
-	
+
+	const Size frameSize(85, 121);
+
 	// create a sprite batch node
 	SpriteBatchNode *batchNode = SpriteBatchNode::create("grossini_dance_atlas.png");
 	if (!batchNode)
 		return false;
 	addChild(batchNode);
+
+	// create a sprite
+	Sprite *danceSprite = Sprite::createWithTexture(batchNode->getTexture(),
+		Rect(0, 0, frameSize.width, frameSize.height));
+	if (!danceSprite)
+		return false;
+	batchNode->addChild(danceSprite);
+
+	// center the sprite
+	Size winSize = Director::getInstance()->getWinSize();
+	danceSprite->setPosition(winSize.width / 2, winSize.height / 2);
 
 	return true;
 }
