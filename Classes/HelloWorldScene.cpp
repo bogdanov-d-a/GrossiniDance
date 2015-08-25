@@ -6,9 +6,13 @@ Scene* HelloWorld::createScene()
 {
 	// 'scene' is an autorelease object
 	auto scene = Scene::create();
+	if (!scene)
+		return nullptr;
 	
 	// 'layer' is an autorelease object
 	auto layer = HelloWorld::create();
+	if (!layer)
+		return nullptr;
 
 	// add layer as a child to scene
 	scene->addChild(layer);
