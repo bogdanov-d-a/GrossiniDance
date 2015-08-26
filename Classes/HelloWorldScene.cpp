@@ -66,15 +66,15 @@ bool HelloWorld::init()
 	}
 
 	// create an action
-	Animate *danceAction = Animate::create(danceAnimation);
-	if (!danceAction)
+	Animate *danceActionOnce = Animate::create(danceAnimation);
+	if (!danceActionOnce)
 		return false;
-	RepeatForever *repeat = RepeatForever::create(danceAction);
-	if (!repeat)
+	m_danceAction = RepeatForever::create(danceActionOnce);
+	if (!m_danceAction)
 		return false;
 
 	// run the action
-	danceSprite->runAction(repeat);
+	danceSprite->runAction(m_danceAction);
 
 	return true;
 }
