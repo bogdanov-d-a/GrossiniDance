@@ -36,8 +36,7 @@ bool HelloWorld::init()
 	addChild(batchNode);
 
 	// create a sprite
-	Sprite *danceSprite = Sprite::createWithTexture(batchNode->getTexture(),
-		Rect(0, 0, frameSize.width, frameSize.height));
+	Sprite *danceSprite = Sprite::createWithTexture(batchNode->getTexture(), Rect(Vec2(), frameSize));
 	if (!danceSprite)
 		return false;
 	batchNode->addChild(danceSprite);
@@ -45,6 +44,35 @@ bool HelloWorld::init()
 	// center the sprite
 	Size winSize = Director::getInstance()->getWinSize();
 	danceSprite->setPosition(winSize.width / 2, winSize.height / 2);
+
+	// create an animation
+	Animation *danceAnimation = Animation::create();
+	danceAnimation->setDelayPerUnit(0.2f);
+	for (int frameNum = 0; frameNum < 14; ++frameNum)
+	{
+		const int x = frameNum % 5;
+		const int y = frameNum / 5;
+
+		SpriteFrame *frame = SpriteFrame::createWithTexture(batchNode->getTexture(),
+			Rect(Vec2(x * frameSize.width, y * frameSize.height), frameSize));
+		if (!frame)
+			return false;
+		danceAnimation->addSpriteFrame(frame);
+
+		if (frameNum == 14)
+			break;
+	}
+
+	// create an action
+	Animate *danceAction = Animate::create(danceAnimation);
+	if (!danceAction)
+		return false;
+	RepeatForever *repeat = RepeatForever::create(danceAction);
+	if (!repeat)
+		return false;
+
+	// run the action
+	danceSprite->runAction(repeat);
 
 	return true;
 }
