@@ -47,9 +47,13 @@ bool HelloWorld::init()
 	danceSprite->setPosition(roundf((winSize.width - frameSize.width) / 2),
 		roundf((winSize.height - frameSize.height) / 2));
 
-	// create an animation
+	// create animations
 	Animation *danceAnimation = Animation::create();
 	danceAnimation->setDelayPerUnit(0.2f);
+
+	Animation *spinAnimation = Animation::create();
+	spinAnimation->setDelayPerUnit(0.2f);
+
 	for (int frameNum = 0; frameNum < 14; ++frameNum)
 	{
 		const int x = frameNum % 5;
@@ -59,18 +63,29 @@ bool HelloWorld::init()
 			Rect(Vec2(x * frameSize.width, y * frameSize.height), frameSize));
 		if (!frame)
 			return false;
+
 		danceAnimation->addSpriteFrame(frame);
+		if (frameNum >= 10)
+			spinAnimation->addSpriteFrame(frame);
 
 		if (frameNum == 14)
 			break;
 	}
 
-	// create an action
+	// create dance action
 	Animate *danceActionOnce = Animate::create(danceAnimation);
 	if (!danceActionOnce)
 		return false;
 	m_danceAction = RepeatForever::create(danceActionOnce);
 	if (!m_danceAction.Keeps())
+		return false;
+
+	// create spin action
+	Animate *spinActionOnce = Animate::create(spinAnimation);
+	if (!spinActionOnce)
+		return false;
+	m_spinAction = RepeatForever::create(spinActionOnce);
+	if (!m_spinAction.Keeps())
 		return false;
 
 	// run the action

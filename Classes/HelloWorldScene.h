@@ -18,6 +18,7 @@ public:
 
 private:
 	ObjectKeeper<cocos2d::RepeatForever> m_danceAction;
+	ObjectKeeper<cocos2d::RepeatForever> m_spinAction;
 };
 
 #endif // __HELLOWORLD_SCENE_H__
