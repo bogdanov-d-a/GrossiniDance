@@ -1,4 +1,5 @@
 #include "HelloWorldScene.h"
+#include "AnimationKit.h"
 
 USING_NS_CC;
 
@@ -20,6 +21,9 @@ Scene* HelloWorld::createScene()
 	// return the scene
 	return scene;
 }
+
+HelloWorld::HelloWorld()
+{}
 
 // on "init" you need to initialize your instance
 bool HelloWorld::init()
@@ -47,16 +51,13 @@ bool HelloWorld::init()
 	danceSprite->setPosition(roundf((winSize.width - frameSize.width) / 2),
 		roundf((winSize.height - frameSize.height) / 2));
 
-	// create animations
-	Animation *danceAnimation = Animation::create();
-	if (!danceAnimation)
+	// create animation kits
+	m_danceKit = AnimationKit::create(0.2f);
+	if (!m_danceKit.Keeps())
 		return false;
-	danceAnimation->setDelayPerUnit(0.2f);
-
-	Animation *spinAnimation = Animation::create();
-	if (!spinAnimation)
+	m_spinKit = AnimationKit::create(0.2f);
+	if (!m_spinKit.Keeps())
 		return false;
-	spinAnimation->setDelayPerUnit(0.2f);
 
 	for (int frameNum = 0; frameNum < 14; ++frameNum)
 	{
@@ -68,32 +69,21 @@ bool HelloWorld::init()
 		if (!frame)
 			return false;
 
-		danceAnimation->addSpriteFrame(frame);
+		m_danceKit->GetAnimation()->addSpriteFrame(frame);
 		if (frameNum >= 10)
-			spinAnimation->addSpriteFrame(frame);
+			m_spinKit->GetAnimation()->addSpriteFrame(frame);
 
 		if (frameNum == 14)
 			break;
 	}
 
-	// create dance action
-	Animate *danceActionOnce = Animate::create(danceAnimation);
-	if (!danceActionOnce)
+	if (!m_danceKit->InitAction())
 		return false;
-	m_danceAction = RepeatForever::create(danceActionOnce);
-	if (!m_danceAction.Keeps())
-		return false;
-
-	// create spin action
-	Animate *spinActionOnce = Animate::create(spinAnimation);
-	if (!spinActionOnce)
-		return false;
-	m_spinAction = RepeatForever::create(spinActionOnce);
-	if (!m_spinAction.Keeps())
+	if (!m_spinKit->InitAction())
 		return false;
 
 	// run the action
-	danceSprite->runAction(m_danceAction);
+	danceSprite->runAction(m_danceKit->GetAction());
 
 	// add event listener keyboard
 	auto eventListener = EventListenerKeyboard::create();
@@ -105,12 +95,12 @@ bool HelloWorld::init()
 	eventListener->onKeyPressed = [=](EventKeyboard::KeyCode keyCode, Event* event)
 	{
 		danceSprite->stopAllActions();
-		danceSprite->runAction(m_spinAction);
+		danceSprite->runAction(m_spinKit->GetAction());
 	};
 	eventListener->onKeyReleased = [=](EventKeyboard::KeyCode keyCode, Event* event)
 	{
 		danceSprite->stopAllActions();
-		danceSprite->runAction(m_danceAction);
+		danceSprite->runAction(m_danceKit->GetAction());
 	};
 
 	this->_eventDispatcher->addEventListenerWithSceneGraphPriority(eventListener, this);

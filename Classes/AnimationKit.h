@@ -6,9 +6,10 @@
 class AnimationKit : public cocos2d::Object
 {
 public:
-	static AnimationKit* create(float delay, bool repeat = true);
-	bool init(float delay, bool repeat = true);
+	static AnimationKit* create(float delay);
+	bool init(float delay);
 
+	bool InitAction(bool repeat = true);
 	cocos2d::Animation* GetAnimation() const;
 	cocos2d::ActionInterval* GetAction() const;
 

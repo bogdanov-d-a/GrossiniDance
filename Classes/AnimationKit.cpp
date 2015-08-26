@@ -2,10 +2,10 @@
 
 USING_NS_CC;
 
-AnimationKit* AnimationKit::create(float delay, bool repeat)
+AnimationKit* AnimationKit::create(float delay)
 {
 	AnimationKit *pRet = new (std::nothrow) AnimationKit();
-	if (pRet && pRet->init(delay, repeat))
+	if (pRet && pRet->init(delay))
 	{
 		pRet->autorelease();
 	}
@@ -16,12 +16,19 @@ AnimationKit* AnimationKit::create(float delay, bool repeat)
 	return pRet;
 }
 
-bool AnimationKit::init(float delay, bool repeat)
+bool AnimationKit::init(float delay)
 {
 	m_animation = Animation::create();
 	if (!m_animation)
 		return false;
 	m_animation->setDelayPerUnit(delay);
+
+	return true;
+}
+
+bool AnimationKit::InitAction(bool repeat)
+{
+	CCASSERT(!m_action.Keeps(), "Action is already initialized");
 
 	m_action = Animate::create(m_animation);
 	if (!m_action.Keeps())
@@ -33,8 +40,6 @@ bool AnimationKit::init(float delay, bool repeat)
 		if (!m_action.Keeps())
 			return false;
 	}
-
-	return true;
 }
 
 Animation* AnimationKit::GetAnimation() const
@@ -44,5 +49,6 @@ Animation* AnimationKit::GetAnimation() const
 
 ActionInterval* AnimationKit::GetAction() const
 {
+	CCASSERT(m_action.Keeps(), "Action is not initialized");
 	return m_action;
 }
