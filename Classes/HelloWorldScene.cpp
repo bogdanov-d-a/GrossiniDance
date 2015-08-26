@@ -43,7 +43,9 @@ bool HelloWorld::init()
 
 	// center the sprite
 	Size winSize = Director::getInstance()->getWinSize();
-	danceSprite->setPosition(winSize.width / 2, winSize.height / 2);
+	danceSprite->setAnchorPoint(Vec2());
+	danceSprite->setPosition(roundf((winSize.width - frameSize.width) / 2),
+		roundf((winSize.height - frameSize.height) / 2));
 
 	// create an animation
 	Animation *danceAnimation = Animation::create();
