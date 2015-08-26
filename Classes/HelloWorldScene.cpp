@@ -49,9 +49,13 @@ bool HelloWorld::init()
 
 	// create animations
 	Animation *danceAnimation = Animation::create();
+	if (!danceAnimation)
+		return false;
 	danceAnimation->setDelayPerUnit(0.2f);
 
 	Animation *spinAnimation = Animation::create();
+	if (!spinAnimation)
+		return false;
 	spinAnimation->setDelayPerUnit(0.2f);
 
 	for (int frameNum = 0; frameNum < 14; ++frameNum)
