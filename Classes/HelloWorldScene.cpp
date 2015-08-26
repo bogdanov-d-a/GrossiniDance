@@ -70,7 +70,7 @@ bool HelloWorld::init()
 	if (!danceActionOnce)
 		return false;
 	m_danceAction = RepeatForever::create(danceActionOnce);
-	if (!m_danceAction)
+	if (!m_danceAction.Keeps())
 		return false;
 
 	// run the action

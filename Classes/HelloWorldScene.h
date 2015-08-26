@@ -2,6 +2,7 @@
 #define __HELLOWORLD_SCENE_H__
 
 #include "cocos2d.h"
+#include "ObjectKeeper.h"
 
 class HelloWorld : public cocos2d::Layer
 {
@@ -16,7 +17,7 @@ public:
 	CREATE_FUNC(HelloWorld);
 
 private:
-	cocos2d::RepeatForever *m_danceAction;
+	ObjectKeeper<cocos2d::RepeatForever> m_danceAction;
 };
 
 #endif // __HELLOWORLD_SCENE_H__
