@@ -91,5 +91,24 @@ bool HelloWorld::init()
 	// run the action
 	danceSprite->runAction(m_danceAction);
 
+	// add event listener keyboard
+	auto eventListener = EventListenerKeyboard::create();
+	if (!eventListener)
+		return false;
+
+	Director::getInstance()->getOpenGLView()->setIMEKeyboardState(true);
+
+	eventListener->onKeyPressed = [=](EventKeyboard::KeyCode keyCode, Event* event)
+	{
+		danceSprite->stopAllActions();
+		danceSprite->runAction(m_spinAction);
+	};
+	eventListener->onKeyReleased = [=](EventKeyboard::KeyCode keyCode, Event* event)
+	{
+		danceSprite->stopAllActions();
+		danceSprite->runAction(m_danceAction);
+	};
+
+	this->_eventDispatcher->addEventListenerWithSceneGraphPriority(eventListener, this);
 	return true;
 }
